@@ -76,7 +76,7 @@ def get_cached_line(bot, channel, nick):
         return '<{}> {}'.format(nick, line)
 
 
-@module.commands('spongemock')
+@module.commands('spongemock', 'smock')
 @module.example('.spongemock Fortnite is the best game ever!')
 def spongemock(bot, trigger):
     """Make sPonGeMoCk text from the input (or the last thing a user said)."""
