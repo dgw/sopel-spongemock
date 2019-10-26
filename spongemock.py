@@ -28,6 +28,7 @@ def shutdown(bot):
 @module.rule('(.*)')
 @module.priority('low')
 @module.require_chanmsg
+@module.unblockable
 def cache_lines(bot, trigger):
     if trigger.sender not in bot.memory['mock_lines']:
         bot.memory['mock_lines'][trigger.sender] = tools.SopelMemory()
@@ -41,6 +42,7 @@ def cache_lines(bot, trigger):
 @module.echo
 @module.event('PART')
 @module.priority('low')
+@module.unblockable
 def part_prune(bot, trigger):
     if trigger.nick == bot.nick:
         # We left; clean up everything cached for that channel.
@@ -53,6 +55,7 @@ def part_prune(bot, trigger):
 @module.echo
 @module.event('QUIT')
 @module.priority('low')
+@module.unblockable
 def quit_prune(bot, trigger):
     for channel in bot.memory['mock_lines'].keys():
         bot.memory['mock_lines'][channel].pop(trigger.nick, None)
@@ -61,6 +64,7 @@ def quit_prune(bot, trigger):
 @module.echo
 @module.event('KICK')
 @module.priority('low')
+@module.unblockable
 def kick_prune(bot, trigger):
     if trigger.nick == bot.nick:
         # We were kicked; clean up everything cached for that channel.
