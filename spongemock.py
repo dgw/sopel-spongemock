@@ -75,6 +75,8 @@ def kick_prune(bot, trigger):
 
 
 def get_cached_line(bot, channel, nick):
+    channel = tools.Identifier(channel)
+    nick = tools.Identifier(nick)
     line = bot.memory['mock_lines'].get(channel, {}).get(nick, '')
     if line:
         return '<{}> {}'.format(nick, line)
