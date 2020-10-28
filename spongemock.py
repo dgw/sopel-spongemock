@@ -2,7 +2,7 @@
 """
 spongemock.py - Sopel "Mocking SpongeBob" Plugin
 
-Copyright 2019 dgw, technobabbl.es
+Copyright 2020 dgw, technobabbl.es
 """
 from __future__ import print_function, division, unicode_literals, absolute_import
 
@@ -90,7 +90,10 @@ def spongemock(bot, trigger):
         bot.reply('I need text, or a nickname!')
         return module.NOLIMIT
 
-    line = get_cached_line(bot, trigger.sender, trigger.group(3))
+    if trigger.group(3) and not trigger.group(4):
+        line = get_cached_line(bot, trigger.sender, trigger.group(3))
+    else:
+        line = None
 
     if line:
         # last thing someone else said
