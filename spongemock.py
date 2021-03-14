@@ -8,6 +8,7 @@ from __future__ import print_function, division, unicode_literals, absolute_impo
 
 import random
 import re
+import unicodedata
 
 from sopel import module, tools
 
@@ -113,8 +114,8 @@ def mock_case(text):
     repeat = 1
 
     for i in range(1, len(text)):
-        if text[i] == ' ':
-            # spaces shouldn't affect the case-repeat counting
+        if unicodedata.category(text[i]) == 'Zs':
+            # whitespace shouldn't affect the case-repeat counting
             out += text[i]
             continue
         if repeat == 2:
