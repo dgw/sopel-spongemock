@@ -106,28 +106,32 @@ def spongemock(bot, trigger):
 
 
 def mock_case(text):
-    uppers = text.upper()
-    lowers = text.lower()
+    text = text.strip()
 
-    out = lowers[0]
+    out = text[0].lower()
     lower = True
     repeat = 1
 
-    for i in range(1, len(text)):
-        if unicodedata.category(text[i]) == 'Zs':
+    for char in text[1:]:
+        lo = char.lower()
+        up = char.upper()
+
+        if unicodedata.category(char) == 'Zs' or lo == up:
             # whitespace shouldn't affect the case-repeat counting
-            out += text[i]
+            # nor should characters whose case cannot be transformed
+            out += char
             continue
+
         if repeat == 2:
             repeat = 1
             lower = not lower
-            out += lowers[i] if lower else uppers[i]
+            out += lo if lower else up
         else:
             which = random.choice([True, False])
             if which:
-                out += lowers[i]
+                out += lo
             else:
-                out += uppers[i]
+                out += up
             if lower == which:
                 repeat += 1
             else:
