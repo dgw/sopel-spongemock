@@ -97,8 +97,8 @@ def spongemock(bot, trigger):
 
     if line:
         # last thing someone else said
-        nick, text = line.split(maxsplit=1)
-        bot.say(' '.join([nick, mock_case(text)]))
+        nick, sep, text = line.partition(' ')
+        bot.say(sep.join([nick, mock_case(text)]))
     else:
         # use given text
         bot.say(mock_case(trigger.group(2)))
