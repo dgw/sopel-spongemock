@@ -1,8 +1,7 @@
 # coding=utf8
-"""
-spongemock.py - Sopel "Mocking SpongeBob" Plugin
+"""sopel-spongemock - Sopel "Mocking SpongeBob" Plugin
 
-Copyright 2020 dgw, technobabbl.es
+Copyright 2020-2022 dgw, technobabbl.es
 """
 from __future__ import print_function, division, unicode_literals, absolute_import
 
