@@ -27,9 +27,9 @@ def mock_case(text):
         lo = char.lower()
         up = char.upper()
 
-        if unicodedata.category(char) == 'Zs' or lo == up:
-            # whitespace shouldn't affect the case-repeat counting
-            # nor should characters whose case cannot be transformed
+        if unicodedata.category(char) not in {'Lu', 'Ll'} or lo == up:
+            # characters whose case cannot be reliably transformed shouldn't
+            # affect the case-repetition counter
             out += char
             continue
 
