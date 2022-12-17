@@ -1,0 +1,45 @@
+# coding=utf8
+"""Part of sopel-spongemock
+
+Copyright 2022 dgw, technobabbl.es
+"""
+from __future__ import print_function, division, unicode_literals, absolute_import
+
+import random
+import unicodedata
+
+
+def mock_case(text):
+    text = text.strip()
+
+    out = text[0].lower()
+    lower = True
+    repeat = 1
+
+    for char in text[1:]:
+        lo = char.lower()
+        up = char.upper()
+
+        if unicodedata.category(char) == 'Zs' or lo == up:
+            # whitespace shouldn't affect the case-repeat counting
+            # nor should characters whose case cannot be transformed
+            out += char
+            continue
+
+        if repeat == 2:
+            repeat = 1
+            lower = not lower
+            out += lo if lower else up
+        else:
+            which = random.choice([True, False])
+            if which:
+                out += lo
+            else:
+                out += up
+            if lower == which:
+                repeat += 1
+            else:
+                repeat = 1
+                lower = which
+
+    return out
