@@ -3,13 +3,56 @@ Sopel plugin to generate "Spongemock" text (based on *that* SpongeBob meme)
 
 ## Requirements
 
-Only [Sopel](https://github.com/sopel-irc/sopel) itself.
+**Basic usage:** Only [Sopel](https://github.com/sopel-irc/sopel) itself.
+
+**With configurable output:** Additionally requires the `spongemock` PyPI package.
+
+**More robust Unicode detection:** Additionally requires the `unicodedata2` PyPI package.
 
 ## Installation
 
+**Basic**
 ```sh
 pip install sopel-spongemock
 ```
+
+**Configurable**
+```sh
+pip install sopel-spongemock[lib]
+```
+
+**Robust**
+```sh
+pip install sopel-spongemock[ud2]
+```
+
+***Note:** It is possible to install both `lib` and `ud2` extras at once, but
+doing so serves no purpose; the `spongemock` package does not make use of
+`unicodedata` or `unicodedata2`.*
+
+## Configuration
+
+If installed with the `lib` extra, use the following template in Sopel's
+configuration file to set options for `spongemock`'s output:
+
+```ini
+[spongemock]
+diversity_bias = 0.6
+```
+
+The `diversity_bias` option controls the chance of switching cases for each
+letter in the output. `0.0` represents a perfectly random, 50/50 chance.
+Higher values increase the likelihood of switching as more consecutive
+letters are output with the same case. At `1.0`, it's guaranteed that the
+case will switch for every letter.
+
+**Values outside the range of [0.0, 1.0] will cause errors.**
+
+Feel free to experiment with intermediate values to find what "looks right"
+for your own interpretation of the mocking-text meme.
+
+***Note:** Options in this configuration section have no effect if the plugin
+is installed without the `lib` extra.*
 
 ## Usage
 
