@@ -6,7 +6,14 @@ Copyright 2022 dgw, technobabbl.es
 from __future__ import print_function, division, unicode_literals, absolute_import
 
 import random
-import unicodedata
+
+# Python built-in unicodedata uses UCD version 13 (as of Python 3.10)
+# unicodedata2 can provide a more recent version, so we use that if present
+# See also: https://docs.python.org/3/library/unicodedata.html
+try:
+    import unicodedata2 as unicodedata
+except ImportError:
+    import unicodedata
 
 
 def mock_case(text):
