@@ -8,6 +8,7 @@ from __future__ import print_function, division, unicode_literals, absolute_impo
 import re
 
 from sopel import module, tools
+from sopel.config import types
 
 try:
     from spongemock.spongemock import mock as mock_case
@@ -15,7 +16,17 @@ except ImportError:
     from .util import mock_case
 
 
+class SpongeMockSection(types.StaticSection):
+    diversity_bias = types.ValidatedAttribute(
+        'diversity_bias',
+        parse=float,
+        default=0.6,
+    )
+
+
 def setup(bot):
+    bot.config.define_section('spongemock', SpongeMockSection)
+
     if 'mock_lines' not in bot.memory:
         bot.memory['mock_lines'] = tools.SopelMemory()
 
@@ -101,7 +112,15 @@ def spongemock(bot, trigger):
     if line:
         # last thing someone else said
         nick, sep, text = line.partition(' ')
-        bot.say(sep.join([nick, mock_case(text)]))
+        bot.say(sep.join([nick, mock_case(
+            text,
+            diversity_bias=bot.config.spongemock.diversity_bias
+        )]))
     else:
         # use given text
-        bot.say(mock_case(trigger.group(2)))
+        bot.say(
+            mock_case(
+                trigger.group(2),
+                diversity_bias=bot.config.spongemock.diversity_bias,
+            )
+        )

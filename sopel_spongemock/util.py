@@ -16,7 +16,9 @@ except ImportError:
     import unicodedata
 
 
-def mock_case(text):
+def mock_case(text, *args, **kwargs):
+    # args & kwargs ignored; they are there to allow calls to `mock()` from the
+    # `spongemock` package to work here, even if the results aren't identical
     text = text.strip()
 
     out = text[0].lower()
