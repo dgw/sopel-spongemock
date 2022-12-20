@@ -22,6 +22,16 @@ class SpongeMockSection(types.StaticSection):
         parse=float,
         default=0.6,
     )
+    """Set output diversity bias when using the external mocker ('lib' extra)."""
+
+    always_start_lower = types.BooleanAttribute(
+        'always_start_lower',
+        default=False,
+    )
+    """Always start mocked text with a lowercase letter.
+
+    Has no effect if using the built-in mocker, which always starts lowercase.
+    """
 
 
 def setup(bot):
@@ -109,18 +119,22 @@ def spongemock(bot, trigger):
     else:
         line = None
 
+    nick = sep = None
+    text = trigger.group(2)
     if line:
         # last thing someone else said
         nick, sep, text = line.partition(' ')
-        bot.say(sep.join([nick, mock_case(
-            text,
-            diversity_bias=bot.config.spongemock.diversity_bias
-        )]))
-    else:
-        # use given text
-        bot.say(
-            mock_case(
-                trigger.group(2),
-                diversity_bias=bot.config.spongemock.diversity_bias,
-            )
-        )
+
+    text = mock_case(text, diversity_bias=bot.config.spongemock.diversity_bias)
+    if bot.config.spongemock.always_start_lower:
+        for c in text:
+            if c.islower():
+                break
+            elif c.isupper():
+                text = text.swapcase()
+                break
+
+    if nick is not None:
+        text = sep.join(nick, text)
+
+    bot.say(text)

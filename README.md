@@ -38,6 +38,7 @@ configuration file to set options for `spongemock`'s output:
 ```ini
 [spongemock]
 diversity_bias = 0.6
+always_start_lower = False
 ```
 
 The `diversity_bias` option controls the chance of switching cases for each
@@ -50,6 +51,10 @@ case will switch for every letter.
 
 Feel free to experiment with intermediate values to find what "looks right"
 for your own interpretation of the mocking-text meme.
+
+The `always_start_lower` option will output `text.swapcase()` if the first
+letter of the output is capitalized. (While the built-in mocker always starts
+with lowercase, the external library sets case of the first letter randomly.)
 
 ***Note:** Options in this configuration section have no effect if the plugin
 is installed without the `lib` extra.*
