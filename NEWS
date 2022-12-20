@@ -3,6 +3,7 @@
 
 Added:
 * Support for using `spongemock` external library
+* Support for `unicodedata2` when present
 * Plugin configuration options (effective only when external library is in use)
 
 Changed:
