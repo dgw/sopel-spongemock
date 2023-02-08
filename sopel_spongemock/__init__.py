@@ -7,7 +7,7 @@ from __future__ import print_function, division, unicode_literals, absolute_impo
 
 import re
 
-from sopel import module, tools
+from sopel import plugin, tools
 from sopel.config import types
 
 try:
@@ -48,11 +48,11 @@ def shutdown(bot):
         pass
 
 
-@module.echo
-@module.rule('(.*)')
-@module.priority('low')
-@module.require_chanmsg
-@module.unblockable
+@plugin.echo
+@plugin.rule('(.*)')
+@plugin.priority('low')
+@plugin.require_chanmsg
+@plugin.unblockable
 def cache_lines(bot, trigger):
     if trigger.sender not in bot.memory['mock_lines']:
         bot.memory['mock_lines'][trigger.sender] = tools.SopelMemory()
@@ -63,10 +63,10 @@ def cache_lines(bot, trigger):
         bot.memory['mock_lines'][trigger.sender][trigger.nick] = line
 
 
-@module.echo
-@module.event('PART')
-@module.priority('low')
-@module.unblockable
+@plugin.echo
+@plugin.event('PART')
+@plugin.priority('low')
+@plugin.unblockable
 def part_prune(bot, trigger):
     if trigger.nick == bot.nick:
         # We left; clean up everything cached for that channel.
@@ -76,19 +76,19 @@ def part_prune(bot, trigger):
         bot.memory['mock_lines'].get(trigger.sender, {}).pop(trigger.nick, None)
 
 
-@module.echo
-@module.event('QUIT')
-@module.priority('low')
-@module.unblockable
+@plugin.echo
+@plugin.event('QUIT')
+@plugin.priority('low')
+@plugin.unblockable
 def quit_prune(bot, trigger):
     for channel in bot.memory['mock_lines'].keys():
         bot.memory['mock_lines'][channel].pop(trigger.nick, None)
 
 
-@module.echo
-@module.event('KICK')
-@module.priority('low')
-@module.unblockable
+@plugin.echo
+@plugin.event('KICK')
+@plugin.priority('low')
+@plugin.unblockable
 def kick_prune(bot, trigger):
     if trigger.nick == bot.nick:
         # We were kicked; clean up everything cached for that channel.
@@ -106,13 +106,13 @@ def get_cached_line(bot, channel, nick):
         return '<{}> {}'.format(nick, line)
 
 
-@module.commands('spongemock', 'smock')
-@module.example('.spongemock Fortnite is the best game ever!')
+@plugin.commands('spongemock', 'smock', 'mock')
+@plugin.example('.spongemock Fortnite is the best game ever!')
 def spongemock(bot, trigger):
     """Make sPonGeMoCk text from the input (or the last thing a user said)."""
     if not trigger.group(2):
         bot.reply('I need text, or a nickname!')
-        return module.NOLIMIT
+        return plugin.NOLIMIT
 
     if trigger.group(3) and not trigger.group(4):
         line = get_cached_line(bot, trigger.sender, trigger.group(3))
