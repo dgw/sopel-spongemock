@@ -135,6 +135,6 @@ def spongemock(bot, trigger):
                 break
 
     if nick is not None:
-        text = sep.join(nick, text)
+        text = sep.join((nick, text))
 
     bot.say(text)
