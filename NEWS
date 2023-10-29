@@ -1,3 +1,15 @@
+1.1.1
+=====
+
+Fixed:
+* `TypeError` when attempting to `.smock` by nick (#7 by @SnoopJ)
+* Documentation of optional support for `unicodedata2` library
+
+Changed:
+* Replaced deprecated `module` decorators with their `plugin` counterparts
+  (future-proofing this plugin for Sopel 8, Sopel 9, and beyond)
+
+
 1.1.0
 =====
 
