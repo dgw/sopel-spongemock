@@ -100,7 +100,13 @@ def kick_prune(bot, trigger):
 
 def get_cached_line(bot, channel, nick):
     channel = tools.Identifier(channel)
-    nick = tools.Identifier(nick)
+
+    try:
+        nick = bot.users[nick].nick
+    except (KeyError, AttributeError):
+        # rather just leave `nick` as-is and continue outputting if possible
+        pass
+
     line = bot.memory['mock_lines'].get(channel, {}).get(nick, '')
     if line:
         return '<{}> {}'.format(nick, line)
