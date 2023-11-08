@@ -38,7 +38,7 @@ def setup(bot):
     bot.config.define_section('spongemock', SpongeMockSection)
 
     if 'mock_lines' not in bot.memory:
-        bot.memory['mock_lines'] = tools.SopelMemory()
+        bot.memory['mock_lines'] = tools.SopelIdentifierMemory()
 
 
 def shutdown(bot):
@@ -55,7 +55,7 @@ def shutdown(bot):
 @plugin.unblockable
 def cache_lines(bot, trigger):
     if trigger.sender not in bot.memory['mock_lines']:
-        bot.memory['mock_lines'][trigger.sender] = tools.SopelMemory()
+        bot.memory['mock_lines'][trigger.sender] = tools.SopelIdentifierMemory()
 
     line = trigger.group()
     # don't store /me commands, or obvious bot commands
