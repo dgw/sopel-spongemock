@@ -111,17 +111,20 @@ def kick_prune(bot, trigger):
 
 
 def get_cached_line(bot, channel, nick):
-    channel = tools.Identifier(channel)
+    if hasattr(bot, 'make_identifier'):
+        # sopel 8+
+        channel = bot.make_identifier(channel)
+        nick = bot.make_identifier(nick)
+    else:
+        # sopel 7
+        channel = tools.Identifier(channel)
+        nick = tools.Identifier(nick)
 
     try:
         nick = bot.users[nick].nick
     except (KeyError, AttributeError):
-        try:
-            # sopel 8+, with proper casemapping
-            nick = bot.make_identifier(nick)
-        except AttributeError:
-            # sopel 7 fallback
-            nick = tools.Identifier(nick)
+        # just keep what we already have; it's better than nothing
+        pass
 
     line = bot.memory['mock_lines'].get(channel, {}).get(nick, '')
     if line:
