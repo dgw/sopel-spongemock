@@ -104,8 +104,12 @@ def get_cached_line(bot, channel, nick):
     try:
         nick = bot.users[nick].nick
     except (KeyError, AttributeError):
-        # rather just leave `nick` as-is and continue outputting if possible
-        pass
+        try:
+            # sopel 8+, with proper casemapping
+            nick = bot.make_identifier(nick)
+        except AttributeError:
+            # sopel 7 fallback
+            nick = tools.Identifier(nick)
 
     line = bot.memory['mock_lines'].get(channel, {}).get(nick, '')
     if line:
