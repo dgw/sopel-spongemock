@@ -1,3 +1,11 @@
+1.1.2
+=====
+
+Fixed:
+* Output canonical nick instead of copying `.smock <nick>`'s input (#8 by @dgw)
+* `.smock <nick>` didn't casemap correctly (#9 by @dgw)
+
+
 1.1.1
 =====
 
