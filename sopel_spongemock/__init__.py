@@ -77,10 +77,11 @@ def part_prune(bot, trigger):
 
 
 @plugin.echo
-@plugin.event('QUIT')
+@plugin.event('QUIT', 'NICK')
 @plugin.priority('low')
 @plugin.unblockable
 def quit_prune(bot, trigger):
+    # NICK is treated like the old nick QUITting for simplicity
     for channel in bot.memory['mock_lines'].keys():
         bot.memory['mock_lines'][channel].pop(trigger.nick, None)
 
