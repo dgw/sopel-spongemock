@@ -38,7 +38,13 @@ def setup(bot):
     bot.config.define_section('spongemock', SpongeMockSection)
 
     if 'mock_lines' not in bot.memory:
-        bot.memory['mock_lines'] = tools.SopelIdentifierMemory()
+        if hasattr(bot, 'make_identifier'):
+            # sopel 8+
+            new_mem = tools.SopelIdentifierMemory(identifier_factory=bot.make_identifier)
+        else:
+            # sopel 7
+            new_mem = tools.SopelIdentifierMemory()
+        bot.memory['mock_lines'] = new_mem
 
 
 def shutdown(bot):
@@ -55,7 +61,13 @@ def shutdown(bot):
 @plugin.unblockable
 def cache_lines(bot, trigger):
     if trigger.sender not in bot.memory['mock_lines']:
-        bot.memory['mock_lines'][trigger.sender] = tools.SopelIdentifierMemory()
+        if hasattr(bot, 'make_identifier'):
+            # sopel 8+
+            new_mem = tools.SopelIdentifierMemory(identifier_factory=bot.make_identifier)
+        else:
+            # sopel 7
+            new_mem = tools.SopelIdentifierMemory()
+        bot.memory['mock_lines'][trigger.sender] = new_mem
 
     line = trigger.group()
     # don't store /me commands, or obvious bot commands
@@ -100,12 +112,19 @@ def kick_prune(bot, trigger):
 
 
 def get_cached_line(bot, channel, nick):
-    channel = tools.Identifier(channel)
+    if hasattr(bot, 'make_identifier'):
+        # sopel 8+
+        channel = bot.make_identifier(channel)
+        nick = bot.make_identifier(nick)
+    else:
+        # sopel 7
+        channel = tools.Identifier(channel)
+        nick = tools.Identifier(nick)
 
     try:
         nick = bot.users[nick].nick
     except (KeyError, AttributeError):
-        # rather just leave `nick` as-is and continue outputting if possible
+        # just keep what we already have; it's better than nothing
         pass
 
     line = bot.memory['mock_lines'].get(channel, {}).get(nick, '')
