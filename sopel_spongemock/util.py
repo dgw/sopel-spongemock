@@ -1,9 +1,8 @@
-# coding=utf8
 """Part of sopel-spongemock
 
 Copyright 2022 dgw, technobabbl.es
 """
-from __future__ import print_function, division, unicode_literals, absolute_import
+from __future__ import annotations
 
 import random
 

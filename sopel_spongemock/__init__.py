@@ -1,9 +1,8 @@
-# coding=utf8
 """sopel-spongemock - Sopel "Mocking SpongeBob" Plugin
 
 Copyright 2020-2022 dgw, technobabbl.es
 """
-from __future__ import print_function, division, unicode_literals, absolute_import
+from __future__ import annotations
 
 import re
 
